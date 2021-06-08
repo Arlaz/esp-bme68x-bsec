@@ -82,8 +82,8 @@ extern "C"
 /* header files */
 /**********************************************************************************************************************/
 
-/* Use the following bme680 driver: https://github.com/BoschSensortec/BME680_driver/releases/tag/bme680_v3.5.1 */
-#include "bme680.h"
+/* Use the following bme68x driver: https://github.com/BoschSensortec/BME68x-Sensor-API */
+#include "bme68x.h"
 /* BSEC header files are available in the inc/ folder of the release package */
 #include "bsec_interface.h"
 #include "bsec_datatypes.h"
@@ -93,16 +93,31 @@ extern "C"
 /* type definitions */
 /**********************************************************************************************************************/
 
-/* function pointer to the system specific sleep function */
-typedef void (*sleep_fct)(uint32_t t_ms);
-
 /* function pointer to the system specific timestamp derivation function */
 typedef int64_t (*get_timestamp_us_fct)();
 
 /* function pointer to the function processing obtained BSEC outputs */
-typedef void (*output_ready_fct)(int64_t timestamp, float iaq, uint8_t iaq_accuracy, float temperature, float humidity,
-     float pressure, float raw_temperature, float raw_humidity, float gas, bsec_library_return_t bsec_status,
-     float static_iaq, float co2_equivalent, float breath_voc_equivalent);
+typedef void (*output_ready_fct)(
+        int64_t timestamp,
+        float iaq,
+        uint8_t iaq_accuracy,
+        float temp,
+        float raw_temp,
+        float raw_pressure,
+        float humidity,
+        float raw_humidity,
+        float raw_gas,
+        float static_iaq,
+        uint8_t static_iaq_accuracy,
+        float co2_equivalent,
+        uint8_t co2_accuracy,
+        float breath_voc_equivalent,
+        uint8_t breath_voc_accuracy,
+        float comp_gas_value,
+        uint8_t comp_gas_accuracy,
+        float gas_percentage,
+        uint8_t gas_percentage_acccuracy,
+        bsec_library_return_t bsec_status);
 
 /* function pointer to the function loading a previous BSEC state from NVM */
 typedef uint32_t (*state_load_fct)(uint8_t *state_buffer, uint32_t n_buffer);
@@ -118,7 +133,7 @@ typedef uint32_t (*config_load_fct)(uint8_t *state_buffer, uint32_t n_buffer);
 /* Structure with the return value from bsec_iot_init() */
 typedef struct {
 	/*! Result of API execution status */
-	int8_t bme680_status;
+	int8_t bme68x_status;
 	/*! Result of BSEC library */
 	bsec_library_return_t bsec_status;
 } return_values_init;
@@ -127,7 +142,7 @@ typedef struct {
 /**********************************************************************************************************************/
 
 /*!
- * @brief       Initialize the BME680 sensor and the BSEC library
+ * @brief       Initialize the BME68X sensor and the BSEC library
  *
  * @param[in]   sample_rate         mode to be used (either BSEC_SAMPLE_RATE_ULP or BSEC_SAMPLE_RATE_LP)
  * @param[in]   temperature_offset  device-specific temperature offset (due to self-heating)
@@ -138,8 +153,8 @@ typedef struct {
  *
  * @return      zero if successful, negative otherwise
  */
-return_values_init bsec_iot_init(float sample_rate, float temperature_offset, bme680_com_fptr_t bus_write, bme680_com_fptr_t bus_read, 
-    sleep_fct sleep, state_load_fct state_load, config_load_fct config_load);
+return_values_init bsec_iot_init(float sample_rate, float temperature_offset, bme68x_write_fptr_t bus_write, bme68x_read_fptr_t bus_read,
+                                 bme68x_delay_us_fptr_t sleep, state_load_fct state_load, config_load_fct config_load);
 
 /*!
  * @brief       Runs the main (endless) loop that queries sensor settings, applies them, and processes the measured data
@@ -152,8 +167,8 @@ return_values_init bsec_iot_init(float sample_rate, float temperature_offset, bm
  *
  * @return      return_values_init	struct with the result of the API and the BSEC library
  */ 
-_Noreturn void bsec_iot_loop(sleep_fct sleep, get_timestamp_us_fct get_timestamp_us, output_ready_fct output_ready,
-    state_save_fct state_save, uint32_t save_intvl);
+_Noreturn void bsec_iot_loop(bme68x_delay_us_fptr_t sleep, get_timestamp_us_fct get_timestamp_us, output_ready_fct output_ready,
+                             state_save_fct state_save, uint32_t save_intvl);
 
 #ifdef __cplusplus
 }

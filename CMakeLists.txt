@@ -1,4 +1,4 @@
-set(bme680_driver_dir "bme680_driver")
+set(bme68x_driver_dir "bme68x_driver")
 set(bsec_dir "bsec")
 
 
@@ -7,13 +7,13 @@ set (BME_PROFILE "generic_33v_3s_28d")
 
 idf_component_register(
         SRCS
-            ${bme680_driver_dir}/bme680.c
+            ${bme68x_driver_dir}/bme68x.c
 
             ${bsec_dir}/bsec_integration.c
-            ${bsec_dir}/config/${BME_PROFILE}/bsec_serialized_configurations_iaq.c
+            ${bsec_dir}/config/${BME_PROFILE}/bsec_serialized_configurations_selectivity.c
 
         INCLUDE_DIRS
-            ${bme680_driver_dir}
+            ${bme68x_driver_dir}
 
             ${bsec_dir}
             ${bsec_dir}/algo/normal_version/inc
