@@ -116,12 +116,12 @@ typedef uint32_t (*config_load_fct)(uint8_t *state_buffer, uint32_t n_buffer);
 /* structure definitions */
 
 /* Structure with the return value from bsec_iot_init() */
-typedef struct{
+typedef struct {
 	/*! Result of API execution status */
 	int8_t bme680_status;
 	/*! Result of BSEC library */
 	bsec_library_return_t bsec_status;
-}return_values_init;
+} return_values_init;
 /**********************************************************************************************************************/
 /* function declarations */
 /**********************************************************************************************************************/

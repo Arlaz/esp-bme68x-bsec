@@ -84,7 +84,7 @@
 /* local macro definitions */
 /**********************************************************************************************************************/
 
-#define NUM_USED_OUTPUTS 8
+#define NUM_USED_OUTPUTS 7
 
 /**********************************************************************************************************************/
 /* global variable declarations */
@@ -120,20 +120,18 @@ static bsec_library_return_t bme680_bsec_update_subscription(float sample_rate) 
     /* note: Virtual sensors as desired to be added here */
     requested_virtual_sensors[0].sensor_id = BSEC_OUTPUT_IAQ;
     requested_virtual_sensors[0].sample_rate = sample_rate;
-    requested_virtual_sensors[1].sensor_id = BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE;
+    requested_virtual_sensors[1].sensor_id = BSEC_OUTPUT_STATIC_IAQ;
     requested_virtual_sensors[1].sample_rate = sample_rate;
-    requested_virtual_sensors[2].sensor_id = BSEC_OUTPUT_RAW_PRESSURE;
+    requested_virtual_sensors[2].sensor_id = BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE;
     requested_virtual_sensors[2].sample_rate = sample_rate;
     requested_virtual_sensors[3].sensor_id = BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY;
     requested_virtual_sensors[3].sample_rate = sample_rate;
-    requested_virtual_sensors[4].sensor_id = BSEC_OUTPUT_RAW_GAS;
+    requested_virtual_sensors[4].sensor_id = BSEC_OUTPUT_RAW_PRESSURE;
     requested_virtual_sensors[4].sample_rate = sample_rate;
-    requested_virtual_sensors[5].sensor_id = BSEC_OUTPUT_RAW_TEMPERATURE;
+    requested_virtual_sensors[5].sensor_id = BSEC_OUTPUT_BREATH_VOC_EQUIVALENT;
     requested_virtual_sensors[5].sample_rate = sample_rate;
-    requested_virtual_sensors[6].sensor_id = BSEC_OUTPUT_RAW_HUMIDITY;
+    requested_virtual_sensors[6].sensor_id = BSEC_OUTPUT_CO2_EQUIVALENT;
     requested_virtual_sensors[6].sample_rate = sample_rate;
-    requested_virtual_sensors[7].sensor_id = BSEC_OUTPUT_STATIC_IAQ;
-    requested_virtual_sensors[7].sample_rate = sample_rate;
 
     /* Call bsec_update_subscription() to enable/disable the requested virtual sensors */
     status = bsec_update_subscription(requested_virtual_sensors, n_requested_virtual_sensors, required_sensor_settings,
